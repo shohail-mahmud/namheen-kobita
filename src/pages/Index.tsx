@@ -37,7 +37,7 @@ export default function Index() {
   const [inputError, setInputError] = useState(false);
   
   const inputRef = useRef<HTMLInputElement>(null);
-  const { initAudio, playTypeSound, playSubmitSound, playBeep, playGlitchSound } = useAudio();
+  const { initAudio, playTypeSound, playSubmitSound, playBeep, playGlitchSound, toggleMute, isMuted } = useAudio();
 
   const typeText = useCallback(async (text: string, speed = 55) => {
     setDisplayText('');
@@ -306,32 +306,15 @@ export default function Index() {
 
   const handleDownload = useCallback(() => {
     playSubmitSound();
-    
-    const data = {
-      title: "বাংলা কবিতার ভেতরে - তোমার উত্তরসমূহ",
-      playerName: playerName || "(নাম দেওয়া হয়নি)",
-      responses: answers,
-      sources: [
-        "রবীন্দ্রনাথ ঠাকুর",
-        "লালন ফকির",
-        "জীবনানন্দ দাশ",
-        "শক্তি চট্টোপাধ্যায়",
-        "সুনীল গঙ্গোপাধ্যায়"
-      ],
-      developer: "Shohail Mahmud"
-    };
-    
-    const jsonStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'bangla-kobitar-uttor.json';
-    a.click();
-    
-    URL.revokeObjectURL(url);
-  }, [playSubmitSound, playerName, answers]);
+  }, [playSubmitSound]);
+
+  const handleMuteToggle = useCallback(() => {
+    if (!audioInitialized) {
+      initAudio();
+      setAudioInitialized(true);
+    }
+    toggleMute();
+  }, [audioInitialized, initAudio, toggleMute]);
 
   // Initialize on mount
   useEffect(() => {
@@ -340,10 +323,14 @@ export default function Index() {
 
   return (
     <CRTScreen>
-      {/* Audio indicator */}
-      <div className="absolute top-4 right-4 text-primary text-[0.65rem] opacity-20 z-50">
-        {audioInitialized ? '🔊' : '🔇'}
-      </div>
+      {/* Audio control */}
+      <button 
+        onClick={handleMuteToggle}
+        className="absolute top-4 right-4 text-primary text-[1.2rem] opacity-40 hover:opacity-70 transition-opacity z-50 cursor-pointer"
+        title={isMuted ? 'Unmute' : 'Mute'}
+      >
+        {audioInitialized ? (isMuted ? '🔇' : '🔊') : '🔇'}
+      </button>
 
       {currentScreen === 'summary' ? (
         <SummaryScreen
