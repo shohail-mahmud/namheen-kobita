@@ -1,105 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
+    /* CRT Deep Blue Screen */
+    --background: 215 55% 9%;
+    --foreground: 45 73% 56%;
+    
+    /* Golden yellow text */
+    --primary: 45 73% 56%;
+    --primary-foreground: 215 55% 9%;
+    
+    /* Secondary - muted gold */
+    --secondary: 45 50% 40%;
+    --secondary-foreground: 45 73% 56%;
+    
+    /* Muted */
+    --muted: 215 40% 15%;
+    --muted-foreground: 45 73% 40%;
+    
+    /* Accent */
+    --accent: 45 73% 56%;
+    --accent-foreground: 215 55% 9%;
+    
+    /* Card/Popover */
+    --card: 215 55% 9%;
+    --card-foreground: 45 73% 56%;
+    --popover: 215 55% 9%;
+    --popover-foreground: 45 73% 56%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Border/Input/Ring */
+    --border: 45 50% 30%;
+    --input: 45 50% 30%;
+    --ring: 45 73% 56%;
+    
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* CRT specific colors */
+    --crt-screen: 215 55% 9%;
+    --crt-text: 45 73% 56%;
+    --crt-glow: 45 73% 56%;
+    --crt-border: 45 50% 30%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Noto Sans Bengali', sans-serif;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+}
+
+/* CRT Effects */
+@layer utilities {
+  .crt-scanlines {
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.06),
+      rgba(0, 0, 0, 0.06) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+  
+  .crt-vignette {
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.35) 100%);
+  }
+  
+  .text-glow {
+    text-shadow: 0 0 25px hsl(45 73% 56% / 0.1);
+  }
+  
+  .text-glow-strong {
+    text-shadow: 0 0 20px hsl(45 73% 56% / 0.2);
+  }
+}
+
+/* Animations */
+@keyframes blink {
+  0%, 48% { opacity: 0.7; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes glitchTear {
+  0% { clip-path: inset(0 0 85% 0); transform: translateX(0); }
+  20% { clip-path: inset(15% 0 70% 0); transform: translateX(-6px); }
+  40% { clip-path: inset(40% 0 45% 0); transform: translateX(5px); }
+  60% { clip-path: inset(60% 0 25% 0); transform: translateX(-3px); }
+  80% { clip-path: inset(80% 0 5% 0); transform: translateX(2px); }
+  100% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+}
+
+@keyframes rgbShiftR {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-2px, 1px); }
+  75% { transform: translate(2px, -1px); }
+}
+
+@keyframes rgbShiftB {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(2px, -1px); }
+  75% { transform: translate(-2px, 1px); }
+}
+
+@keyframes horizontalDistort {
+  0% { transform: skewX(0deg); }
+  20% { transform: skewX(-1.5deg) translateX(-4px); }
+  40% { transform: skewX(1deg) translateX(3px); }
+  60% { transform: skewX(-0.8deg) translateX(-2px); }
+  80% { transform: skewX(0.4deg) translateX(1px); }
+  100% { transform: skewX(0deg) translateX(0); }
+}
+
+@keyframes flickerGlitch {
+  0%, 100% { opacity: 1; }
+  15% { opacity: 0.5; }
+  30% { opacity: 0.9; }
+  45% { opacity: 0.3; }
+  60% { opacity: 0.85; }
+  75% { opacity: 0.4; }
+}
+
+.cursor-blink {
+  animation: blink 1s infinite;
+}
+
+.glitch-tear {
+  animation: glitchTear 0.15s ease-out;
+}
+
+.h-distort {
+  animation: horizontalDistort 0.18s ease-out;
+}
+
+.flicker-glitch {
+  animation: flickerGlitch 0.16s ease-out;
+}
+
+.rgb-split {
+  position: relative;
+}
+
+.rgb-split::before,
+.rgb-split::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  white-space: pre-wrap;
+}
+
+.rgb-split::before {
+  color: #ff0040;
+  animation: rgbShiftR 0.12s ease-out;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+.rgb-split::after {
+  color: #00ffff;
+  animation: rgbShiftB 0.12s ease-out;
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Scrollbar styling */
+.summary-scroll::-webkit-scrollbar {
+  width: 3px;
+}
+
+.summary-scroll::-webkit-scrollbar-thumb {
+  background: hsl(45 73% 56% / 0.2);
 }
