@@ -57,6 +57,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         container.style.display = 'flex';
         container.style.flexDirection = 'column';
         container.style.fontFamily = "'Noto Sans Bengali', sans-serif";
+        container.style.overflow = 'hidden';
         
         const header = document.createElement('div');
         header.style.textAlign = 'center';
@@ -105,25 +106,105 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         footer.style.paddingTop = '40px';
         footer.style.marginTop = 'auto';
         footer.innerHTML = `
-          <div style="color: hsla(45, 73%, 56%, 0.3); font-size: 16px;">
+          <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 16px;">
             @shohailmahmud09
           </div>
         `;
         container.appendChild(footer);
         
+        // Scanlines overlay
         const scanlines = document.createElement('div');
         scanlines.style.position = 'absolute';
         scanlines.style.inset = '0';
-        scanlines.style.background = 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.04) 1px, transparent 1px, transparent 3px)';
+        scanlines.style.background = 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06) 1px, transparent 1px, transparent 3px)';
         scanlines.style.pointerEvents = 'none';
         container.appendChild(scanlines);
         
+        // Vignette overlay
         const vignette = document.createElement('div');
         vignette.style.position = 'absolute';
         vignette.style.inset = '0';
-        vignette.style.background = 'radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.4) 100%)';
+        vignette.style.background = 'radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%)';
         vignette.style.pointerEvents = 'none';
         container.appendChild(vignette);
+
+        // Glitch effect - horizontal tear lines
+        for (let g = 0; g < 3; g++) {
+          const glitchLine = document.createElement('div');
+          const yPos = 15 + Math.random() * 70;
+          const height = 2 + Math.random() * 8;
+          const xOffset = (Math.random() - 0.5) * 20;
+          glitchLine.style.position = 'absolute';
+          glitchLine.style.left = `${xOffset}px`;
+          glitchLine.style.right = `${-xOffset}px`;
+          glitchLine.style.top = `${yPos}%`;
+          glitchLine.style.height = `${height}px`;
+          glitchLine.style.background = 'hsla(215, 55%, 9%, 0.8)';
+          glitchLine.style.mixBlendMode = 'multiply';
+          glitchLine.style.pointerEvents = 'none';
+          container.appendChild(glitchLine);
+        }
+
+        // RGB shift effect - red and cyan shadows
+        const rgbShiftR = document.createElement('div');
+        rgbShiftR.style.position = 'absolute';
+        rgbShiftR.style.inset = '0';
+        rgbShiftR.style.background = 'linear-gradient(90deg, rgba(255, 0, 64, 0.03) 0%, transparent 3%, transparent 97%, rgba(255, 0, 64, 0.03) 100%)';
+        rgbShiftR.style.pointerEvents = 'none';
+        container.appendChild(rgbShiftR);
+
+        const rgbShiftB = document.createElement('div');
+        rgbShiftB.style.position = 'absolute';
+        rgbShiftB.style.inset = '0';
+        rgbShiftB.style.background = 'linear-gradient(90deg, rgba(0, 255, 255, 0.03) 0%, transparent 2%, transparent 98%, rgba(0, 255, 255, 0.03) 100%)';
+        rgbShiftB.style.transform = 'translateX(2px)';
+        rgbShiftB.style.pointerEvents = 'none';
+        container.appendChild(rgbShiftB);
+
+        // Static noise texture
+        const noiseCanvas = document.createElement('canvas');
+        noiseCanvas.width = 1080;
+        noiseCanvas.height = 1350;
+        const noiseCtx = noiseCanvas.getContext('2d');
+        if (noiseCtx) {
+          const imageData = noiseCtx.createImageData(1080, 1350);
+          for (let i = 0; i < imageData.data.length; i += 4) {
+            const noise = Math.random() * 15;
+            imageData.data[i] = noise;
+            imageData.data[i + 1] = noise;
+            imageData.data[i + 2] = noise;
+            imageData.data[i + 3] = 25;
+          }
+          noiseCtx.putImageData(imageData, 0, 0);
+        }
+        const noiseOverlay = document.createElement('div');
+        noiseOverlay.style.position = 'absolute';
+        noiseOverlay.style.inset = '0';
+        noiseOverlay.style.backgroundImage = `url(${noiseCanvas.toDataURL()})`;
+        noiseOverlay.style.opacity = '0.4';
+        noiseOverlay.style.pointerEvents = 'none';
+        container.appendChild(noiseOverlay);
+
+        // Chromatic aberration on edges
+        const chromaticTop = document.createElement('div');
+        chromaticTop.style.position = 'absolute';
+        chromaticTop.style.top = '0';
+        chromaticTop.style.left = '0';
+        chromaticTop.style.right = '0';
+        chromaticTop.style.height = '4px';
+        chromaticTop.style.background = 'linear-gradient(180deg, rgba(255, 0, 100, 0.15), transparent)';
+        chromaticTop.style.pointerEvents = 'none';
+        container.appendChild(chromaticTop);
+
+        const chromaticBottom = document.createElement('div');
+        chromaticBottom.style.position = 'absolute';
+        chromaticBottom.style.bottom = '0';
+        chromaticBottom.style.left = '0';
+        chromaticBottom.style.right = '0';
+        chromaticBottom.style.height = '4px';
+        chromaticBottom.style.background = 'linear-gradient(0deg, rgba(0, 255, 255, 0.15), transparent)';
+        chromaticBottom.style.pointerEvents = 'none';
+        container.appendChild(chromaticBottom);
         
         document.body.appendChild(container);
         
@@ -189,21 +270,22 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
       ))}
 
       {visibleItems >= answers.length + 2 && (
-        <div className="text-center mt-8 mb-12">
+        <div className="text-center mt-8 mb-8 animate-fade-in">
           <CRTButton onClick={generateImages} disabled={isGenerating}>
             {isGenerating ? 'ছবি তৈরি হচ্ছে...' : 'ছবি ডাউনলোড করো'}
           </CRTButton>
           <div className="text-primary/30 text-[0.75rem] mt-3">
             {Math.ceil(answers.length / 3)}টি ছবি তৈরি হবে
           </div>
+          
+          {/* Developer credit below button */}
+          <div className="text-primary text-[clamp(0.75rem,1.8vw,0.9rem)] opacity-25 leading-relaxed whitespace-pre-wrap mt-8">
+            ডেভেলপার: Shohail Mahmud
+            <br />
+            Instagram: <a href="https://instagram.com/shohailmahmud09" target="_blank" rel="noopener noreferrer" className="underline">@shohailmahmud09</a>
+          </div>
         </div>
       )}
-
-      <div className="text-primary text-[clamp(0.75rem,1.8vw,0.9rem)] text-center opacity-25 leading-relaxed whitespace-pre-wrap absolute bottom-5 left-0 right-0 z-[100]">
-        ডেভেলপার: Shohail Mahmud
-        <br />
-        Instagram: <a href="https://instagram.com/shohailmahmud09" target="_blank" rel="noopener noreferrer" className="underline">@shohailmahmud09</a>
-      </div>
     </div>
   );
 }
