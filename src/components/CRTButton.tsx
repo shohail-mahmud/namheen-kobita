@@ -20,6 +20,7 @@ export function CRTButton({
         "opacity-75 rounded-md",
         "hover:opacity-100 hover:border-primary/70",
         "focus:outline-none focus:border-primary/70",
+        "disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-primary/45",
         variant === 'submit' && 'mt-5',
         className
       )}

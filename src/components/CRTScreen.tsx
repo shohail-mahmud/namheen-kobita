@@ -22,7 +22,7 @@ export function CRTScreen({ children }: CRTScreenProps) {
   return (
     <div className="w-[min(94vw,880px)] aspect-[4/3] relative rounded-[28px] overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.8)]">
       <div
-        className={`w-full h-full bg-background relative flex justify-center items-center overflow-hidden rounded-[28px] transition-[filter] duration-50 ${
+        className={`w-full h-full bg-crt-screen relative flex justify-center items-center overflow-hidden rounded-[28px] transition-[filter] duration-50 ${
           isFlickering ? 'brightness-90' : ''
         }`}
       >
