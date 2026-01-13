@@ -6,8 +6,8 @@
 
 @layer base {
   :root {
-    /* CRT Deep Blue Screen */
-    --background: 215 55% 9%;
+    /* Outer background - black */
+    --background: 0 0% 0%;
     --foreground: 45 73% 56%;
     
     /* Golden yellow text */
@@ -43,7 +43,7 @@
     
     --radius: 0.5rem;
     
-    /* CRT specific colors */
+    /* CRT specific colors - blue screen */
     --crt-screen: 215 55% 9%;
     --crt-text: 45 73% 56%;
     --crt-glow: 45 73% 56%;
