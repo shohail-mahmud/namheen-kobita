@@ -113,13 +113,13 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
     container.appendChild(chromaticBottom);
   };
 
-  const createNoiseCanvas = () => {
+  const createNoiseCanvas = (width: number, height: number) => {
     const noiseCanvas = document.createElement('canvas');
-    noiseCanvas.width = 1080;
-    noiseCanvas.height = 1350;
+    noiseCanvas.width = width;
+    noiseCanvas.height = height;
     const noiseCtx = noiseCanvas.getContext('2d');
     if (noiseCtx) {
-      const imageData = noiseCtx.createImageData(1080, 1350);
+      const imageData = noiseCtx.createImageData(width, height);
       for (let i = 0; i < imageData.data.length; i += 4) {
         const noise = Math.random() * 15;
         imageData.data[i] = noise;
@@ -133,13 +133,16 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
   };
 
   const generateCoverImage = useCallback(async () => {
+    const width = 1080;
+    const height = 1350;
+    
     const container = document.createElement('div');
     container.style.position = 'fixed';
     container.style.left = '-9999px';
     container.style.top = '0';
-    container.style.width = '1080px';
-    container.style.height = '1350px';
-    container.style.background = 'linear-gradient(180deg, hsl(215, 55%, 9%) 0%, hsl(215, 55%, 6%) 100%)';
+    container.style.width = `${width}px`;
+    container.style.height = `${height}px`;
+    container.style.background = 'hsl(215, 55%, 9%)';
     container.style.display = 'flex';
     container.style.flexDirection = 'column';
     container.style.alignItems = 'center';
@@ -236,7 +239,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
     container.appendChild(footer);
 
     // Add glitch effects
-    const noiseCanvas = createNoiseCanvas();
+    const noiseCanvas = createNoiseCanvas(width, height);
     createGlitchEffects(container, noiseCanvas);
 
     document.body.appendChild(container);
@@ -264,7 +267,9 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
       await generateCoverImage();
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      const chunkSize = 3;
+      // Calculate optimal chunk size - try to fit all in one image, max 7 per image
+      const maxPerImage = 7;
+      const chunkSize = answers.length <= maxPerImage ? answers.length : Math.min(5, Math.ceil(answers.length / Math.ceil(answers.length / maxPerImage)));
       const chunks: Answer[][] = [];
       
       for (let i = 0; i < answers.length; i += chunkSize) {
@@ -274,13 +279,23 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
       for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
         const chunk = chunks[chunkIndex];
         
+        // Calculate dynamic height based on content
+        const headerHeight = 140;
+        const footerHeight = 80;
+        const padding = 120;
+        const answerHeight = 140; // Approximate height per answer
+        const gap = 24;
+        const contentHeight = chunk.length * answerHeight + (chunk.length - 1) * gap;
+        const totalHeight = Math.max(1350, headerHeight + contentHeight + footerHeight + padding);
+        const width = 1080;
+        
         const container = document.createElement('div');
         container.style.position = 'fixed';
         container.style.left = '-9999px';
         container.style.top = '0';
-        container.style.width = '1080px';
-        container.style.height = '1350px';
-        container.style.background = 'linear-gradient(180deg, hsl(215, 55%, 9%) 0%, hsl(215, 55%, 6%) 100%)';
+        container.style.width = `${width}px`;
+        container.style.height = `${totalHeight}px`;
+        container.style.background = 'hsl(215, 55%, 9%)';
         container.style.padding = '60px';
         container.style.display = 'flex';
         container.style.flexDirection = 'column';
@@ -290,37 +305,37 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         const header = document.createElement('div');
         header.style.textAlign = 'center';
         header.style.marginBottom = '40px';
+        header.style.flexShrink = '0';
         header.innerHTML = `
           <div style="color: hsl(45, 73%, 56%); font-size: 32px; font-weight: bold; margin-bottom: 16px; text-shadow: 0 0 20px hsla(45, 73%, 56%, 0.3);">
             বাংলা কবিতার ভেতরে
           </div>
           <div style="color: hsla(45, 73%, 56%, 0.5); font-size: 18px;">
-            ${playerName || "(নাম দেওয়া হয়নি)"} — পর্ব ${chunkIndex + 1}/${chunks.length}
+            ${playerName || "(নাম দেওয়া হয়নি)"}${chunks.length > 1 ? ` — পর্ব ${chunkIndex + 1}/${chunks.length}` : ''}
           </div>
         `;
         container.appendChild(header);
         
         const answersContainer = document.createElement('div');
-        answersContainer.style.flex = '1';
         answersContainer.style.display = 'flex';
         answersContainer.style.flexDirection = 'column';
-        answersContainer.style.gap = '32px';
+        answersContainer.style.gap = `${gap}px`;
         
         chunk.forEach((item) => {
           const answerDiv = document.createElement('div');
-          answerDiv.style.padding = '24px';
-          answerDiv.style.paddingLeft = '28px';
+          answerDiv.style.padding = '20px';
+          answerDiv.style.paddingLeft = '24px';
           answerDiv.style.borderLeft = '3px solid hsla(45, 73%, 56%, 0.3)';
           answerDiv.style.background = 'hsla(215, 55%, 12%, 0.5)';
           answerDiv.style.borderRadius = '8px';
           answerDiv.innerHTML = `
-            <div style="color: hsla(45, 73%, 56%, 0.5); font-size: 16px; margin-bottom: 12px; line-height: 1.5;">
+            <div style="color: hsla(45, 73%, 56%, 0.5); font-size: 15px; margin-bottom: 10px; line-height: 1.5;">
               ${item.question.replace(/\n/g, ' ')}
             </div>
-            <div style="color: hsl(45, 73%, 56%); font-size: 22px; opacity: 0.9; line-height: 1.4; margin-bottom: 8px;">
+            <div style="color: hsl(45, 73%, 56%); font-size: 20px; opacity: 0.9; line-height: 1.4; margin-bottom: 6px;">
               ${item.answer}
             </div>
-            <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 14px;">
+            <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 13px;">
               — ${item.source}
             </div>
           `;
@@ -333,6 +348,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         footer.style.textAlign = 'center';
         footer.style.paddingTop = '40px';
         footer.style.marginTop = 'auto';
+        footer.style.flexShrink = '0';
         footer.innerHTML = `
           <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 16px;">
             @shohailmahmud09
@@ -341,7 +357,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         container.appendChild(footer);
         
         // Add glitch effects
-        const noiseCanvas = createNoiseCanvas();
+        const noiseCanvas = createNoiseCanvas(width, totalHeight);
         createGlitchEffects(container, noiseCanvas);
         
         document.body.appendChild(container);
@@ -354,7 +370,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         });
         
         const link = document.createElement('a');
-        link.download = `bangla-kobita-${chunkIndex + 1}.png`;
+        link.download = chunks.length === 1 ? 'bangla-kobita-answers.png' : `bangla-kobita-${chunkIndex + 1}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
         
@@ -413,7 +429,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
             {isGenerating ? 'ছবি তৈরি হচ্ছে...' : 'ছবি ডাউনলোড করো'}
           </CRTButton>
           <div className="text-primary/30 text-[0.75rem] mt-3">
-            {Math.ceil(answers.length / 3) + 1}টি ছবি তৈরি হবে (১টি কভার + {Math.ceil(answers.length / 3)}টি উত্তর)
+            {answers.length <= 7 ? '২টি ছবি তৈরি হবে (১টি কভার + ১টি উত্তর)' : `${Math.ceil(answers.length / 5) + 1}টি ছবি তৈরি হবে`}
           </div>
           
           {/* Developer credit below button */}
