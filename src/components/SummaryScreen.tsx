@@ -32,105 +32,24 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
     return () => clearInterval(timer);
   }, [answers.length]);
 
-  const createGlitchEffects = (container: HTMLDivElement, noiseCanvas: HTMLCanvasElement) => {
-    // Scanlines overlay
+  const addSubtleEffects = (container: HTMLDivElement) => {
+    // Only add subtle scanlines - no blocking glitch effects
     const scanlines = document.createElement('div');
     scanlines.style.position = 'absolute';
     scanlines.style.inset = '0';
-    scanlines.style.background = 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06) 1px, transparent 1px, transparent 3px)';
+    scanlines.style.background = 'repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.03) 1px, transparent 1px, transparent 3px)';
     scanlines.style.pointerEvents = 'none';
     container.appendChild(scanlines);
     
-    // Vignette overlay
+    // Subtle vignette
     const vignette = document.createElement('div');
     vignette.style.position = 'absolute';
     vignette.style.inset = '0';
-    vignette.style.background = 'radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.5) 100%)';
+    vignette.style.background = 'radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.25) 100%)';
     vignette.style.pointerEvents = 'none';
     container.appendChild(vignette);
-
-    // Glitch effect - horizontal tear lines
-    for (let g = 0; g < 3; g++) {
-      const glitchLine = document.createElement('div');
-      const yPos = 15 + Math.random() * 70;
-      const height = 2 + Math.random() * 8;
-      const xOffset = (Math.random() - 0.5) * 20;
-      glitchLine.style.position = 'absolute';
-      glitchLine.style.left = `${xOffset}px`;
-      glitchLine.style.right = `${-xOffset}px`;
-      glitchLine.style.top = `${yPos}%`;
-      glitchLine.style.height = `${height}px`;
-      glitchLine.style.background = 'hsla(215, 55%, 9%, 0.8)';
-      glitchLine.style.mixBlendMode = 'multiply';
-      glitchLine.style.pointerEvents = 'none';
-      container.appendChild(glitchLine);
-    }
-
-    // RGB shift effect - red and cyan shadows
-    const rgbShiftR = document.createElement('div');
-    rgbShiftR.style.position = 'absolute';
-    rgbShiftR.style.inset = '0';
-    rgbShiftR.style.background = 'linear-gradient(90deg, rgba(255, 0, 64, 0.03) 0%, transparent 3%, transparent 97%, rgba(255, 0, 64, 0.03) 100%)';
-    rgbShiftR.style.pointerEvents = 'none';
-    container.appendChild(rgbShiftR);
-
-    const rgbShiftB = document.createElement('div');
-    rgbShiftB.style.position = 'absolute';
-    rgbShiftB.style.inset = '0';
-    rgbShiftB.style.background = 'linear-gradient(90deg, rgba(0, 255, 255, 0.03) 0%, transparent 2%, transparent 98%, rgba(0, 255, 255, 0.03) 100%)';
-    rgbShiftB.style.transform = 'translateX(2px)';
-    rgbShiftB.style.pointerEvents = 'none';
-    container.appendChild(rgbShiftB);
-
-    // Static noise texture
-    const noiseOverlay = document.createElement('div');
-    noiseOverlay.style.position = 'absolute';
-    noiseOverlay.style.inset = '0';
-    noiseOverlay.style.backgroundImage = `url(${noiseCanvas.toDataURL()})`;
-    noiseOverlay.style.opacity = '0.4';
-    noiseOverlay.style.pointerEvents = 'none';
-    container.appendChild(noiseOverlay);
-
-    // Chromatic aberration on edges
-    const chromaticTop = document.createElement('div');
-    chromaticTop.style.position = 'absolute';
-    chromaticTop.style.top = '0';
-    chromaticTop.style.left = '0';
-    chromaticTop.style.right = '0';
-    chromaticTop.style.height = '4px';
-    chromaticTop.style.background = 'linear-gradient(180deg, rgba(255, 0, 100, 0.15), transparent)';
-    chromaticTop.style.pointerEvents = 'none';
-    container.appendChild(chromaticTop);
-
-    const chromaticBottom = document.createElement('div');
-    chromaticBottom.style.position = 'absolute';
-    chromaticBottom.style.bottom = '0';
-    chromaticBottom.style.left = '0';
-    chromaticBottom.style.right = '0';
-    chromaticBottom.style.height = '4px';
-    chromaticBottom.style.background = 'linear-gradient(0deg, rgba(0, 255, 255, 0.15), transparent)';
-    chromaticBottom.style.pointerEvents = 'none';
-    container.appendChild(chromaticBottom);
   };
 
-  const createNoiseCanvas = (width: number, height: number) => {
-    const noiseCanvas = document.createElement('canvas');
-    noiseCanvas.width = width;
-    noiseCanvas.height = height;
-    const noiseCtx = noiseCanvas.getContext('2d');
-    if (noiseCtx) {
-      const imageData = noiseCtx.createImageData(width, height);
-      for (let i = 0; i < imageData.data.length; i += 4) {
-        const noise = Math.random() * 15;
-        imageData.data[i] = noise;
-        imageData.data[i + 1] = noise;
-        imageData.data[i + 2] = noise;
-        imageData.data[i + 3] = 25;
-      }
-      noiseCtx.putImageData(imageData, 0, 0);
-    }
-    return noiseCanvas;
-  };
 
   const generateCoverImage = useCallback(async () => {
     const width = 1080;
@@ -238,9 +157,8 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
     `;
     container.appendChild(footer);
 
-    // Add glitch effects
-    const noiseCanvas = createNoiseCanvas(width, height);
-    createGlitchEffects(container, noiseCanvas);
+    // Add subtle effects only
+    addSubtleEffects(container);
 
     document.body.appendChild(container);
 
@@ -329,14 +247,11 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
           answerDiv.style.background = 'hsla(215, 55%, 12%, 0.5)';
           answerDiv.style.borderRadius = '8px';
           answerDiv.innerHTML = `
-            <div style="color: hsla(45, 73%, 56%, 0.5); font-size: 15px; margin-bottom: 10px; line-height: 1.5;">
-              ${item.question.replace(/\n/g, ' ')}
+            <div style="color: hsla(45, 73%, 56%, 0.6); font-size: 15px; margin-bottom: 12px; line-height: 1.5;">
+              ${item.question.replace(/\n/g, ' ')} <span style="color: hsla(45, 73%, 56%, 0.4);">— ${item.source}</span>
             </div>
-            <div style="color: hsl(45, 73%, 56%); font-size: 20px; opacity: 0.9; line-height: 1.4; margin-bottom: 6px;">
+            <div style="color: hsl(45, 73%, 56%); font-size: 20px; opacity: 0.9; line-height: 1.4;">
               ${item.answer}
-            </div>
-            <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 13px;">
-              — ${item.source}
             </div>
           `;
           answersContainer.appendChild(answerDiv);
@@ -356,9 +271,8 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         `;
         container.appendChild(footer);
         
-        // Add glitch effects
-        const noiseCanvas = createNoiseCanvas(width, totalHeight);
-        createGlitchEffects(container, noiseCanvas);
+        // Add subtle effects only
+        addSubtleEffects(container);
         
         document.body.appendChild(container);
         
@@ -410,14 +324,11 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
             key={index}
             className="mb-6 text-left px-4 border-l-2 border-primary/15 animate-fade-in"
           >
-            <div className="text-primary/40 text-[clamp(0.85rem,2vw,1rem)] mb-1 leading-tight">
-              {item.question.replace(/\n/g, ' ')}
+            <div className="text-primary/50 text-[clamp(0.85rem,2vw,1rem)] mb-2 leading-tight">
+              {item.question.replace(/\n/g, ' ')} <span className="text-primary/40">— {item.source}</span>
             </div>
             <div className="text-primary text-[clamp(0.95rem,2.3vw,1.1rem)] opacity-80 leading-[1.22]">
               {item.answer}
-            </div>
-            <div className="text-primary/40 text-[0.8rem] mt-1">
-              — {item.source}
             </div>
           </div>
         )

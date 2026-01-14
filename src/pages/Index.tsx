@@ -31,6 +31,7 @@ export default function Index() {
   const [playerName, setPlayerName] = useState('');
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const currentQuestionRef = useRef(0);
   const [shuffledQuestions, setShuffledQuestions] = useState<Question[]>([]);
   const [glitchClass, setGlitchClass] = useState('');
   const [audioInitialized, setAudioInitialized] = useState(false);
@@ -185,7 +186,8 @@ export default function Index() {
     setCurrentScreen('question');
     resetUI();
     
-    const q = shuffledQuestions[currentQuestion];
+    const q = shuffledQuestions[currentQuestionRef.current];
+    if (!q) return;
     
     if (Math.random() < 0.2) {
       await sleep(150);
@@ -199,7 +201,7 @@ export default function Index() {
     setShowInput(true);
     setInputValue('');
     setTimeout(() => inputRef.current?.focus(), 100);
-  }, [typeText, resetUI, shuffledQuestions, currentQuestion, triggerGlitch]);
+  }, [typeText, resetUI, shuffledQuestions, triggerGlitch]);
 
   const showPauseScreen = useCallback(async () => {
     setCurrentScreen('pause');
@@ -229,18 +231,20 @@ export default function Index() {
     setCurrentScreen('summary');
   }, [typeText, resetUI, triggerHeavyGlitch]);
 
-  const submitAnswer = useCallback(async (goToPause = false) => {
+  const submitAnswer = useCallback(async () => {
+    const currentIdx = currentQuestionRef.current;
     const answer = inputValue.trim() || "(কোনো উত্তর দেওয়া হয়নি)";
     const newAnswer = {
-      question: shuffledQuestions[currentQuestion].text,
+      question: shuffledQuestions[currentIdx].text,
       answer: answer,
-      source: shuffledQuestions[currentQuestion].source
+      source: shuffledQuestions[currentIdx].source
     };
     
     setAnswers(prev => [...prev, newAnswer]);
     playSubmitSound();
     
-    const nextQuestion = currentQuestion + 1;
+    const nextQuestion = currentIdx + 1;
+    currentQuestionRef.current = nextQuestion;
     setCurrentQuestion(nextQuestion);
     
     if (nextQuestion < shuffledQuestions.length) {
@@ -259,10 +263,7 @@ export default function Index() {
     } else {
       showEndScreen();
     }
-  }, [inputValue, shuffledQuestions, currentQuestion, playSubmitSound, triggerGlitch, showPauseScreen, showQuestionScreen, showEndScreen]);
-
-  // Ref to track if we need to show next question after pause
-  const pendingQuestionRef = useRef(false);
+  }, [inputValue, shuffledQuestions, playSubmitSound, triggerGlitch, showPauseScreen, showQuestionScreen, showEndScreen]);
 
   const handleYesClick = useCallback(() => {
     if (!audioInitialized) {
