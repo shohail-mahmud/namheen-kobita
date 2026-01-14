@@ -229,7 +229,7 @@ export default function Index() {
     setCurrentScreen('summary');
   }, [typeText, resetUI, triggerHeavyGlitch]);
 
-  const submitAnswer = useCallback(async () => {
+  const submitAnswer = useCallback(async (goToPause = false) => {
     const answer = inputValue.trim() || "(কোনো উত্তর দেওয়া হয়নি)";
     const newAnswer = {
       question: shuffledQuestions[currentQuestion].text,
@@ -260,6 +260,9 @@ export default function Index() {
       showEndScreen();
     }
   }, [inputValue, shuffledQuestions, currentQuestion, playSubmitSound, triggerGlitch, showPauseScreen, showQuestionScreen, showEndScreen]);
+
+  // Ref to track if we need to show next question after pause
+  const pendingQuestionRef = useRef(false);
 
   const handleYesClick = useCallback(() => {
     if (!audioInitialized) {
