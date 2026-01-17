@@ -247,10 +247,10 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
           answerDiv.style.background = 'hsla(215, 55%, 12%, 0.5)';
           answerDiv.style.borderRadius = '8px';
           answerDiv.innerHTML = `
-            <div style="color: hsla(45, 73%, 56%, 0.6); font-size: 15px; margin-bottom: 12px; line-height: 1.5;">
+            <div style="color: hsla(45, 73%, 56%, 0.6); font-size: 13px; margin-bottom: 10px; line-height: 1.5;">
               ${item.question.replace(/\n/g, ' ')} <span style="color: hsla(45, 73%, 56%, 0.4);">— ${item.source}</span>
             </div>
-            <div style="color: hsl(45, 73%, 56%); font-size: 20px; opacity: 0.9; line-height: 1.4;">
+            <div style="color: hsl(45, 73%, 56%); font-size: 17px; opacity: 0.9; line-height: 1.4;">
               ${item.answer}
             </div>
           `;
