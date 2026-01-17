@@ -185,9 +185,9 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
       await generateCoverImage();
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Calculate optimal chunk size - try to fit all in one image, max 7 per image
-      const maxPerImage = 7;
-      const chunkSize = answers.length <= maxPerImage ? answers.length : Math.min(5, Math.ceil(answers.length / Math.ceil(answers.length / maxPerImage)));
+      // Try to fit all answers in one image first, otherwise split
+      const maxPerImage = 10;
+      const chunkSize = answers.length <= maxPerImage ? answers.length : Math.ceil(answers.length / 2);
       const chunks: Answer[][] = [];
       
       for (let i = 0; i < answers.length; i += chunkSize) {
@@ -196,39 +196,31 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
 
       for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex++) {
         const chunk = chunks[chunkIndex];
-        
-        // Calculate dynamic height based on content
-        const headerHeight = 140;
-        const footerHeight = 80;
-        const padding = 120;
-        const answerHeight = 140; // Approximate height per answer
-        const gap = 24;
-        const contentHeight = chunk.length * answerHeight + (chunk.length - 1) * gap;
-        const totalHeight = Math.max(1350, headerHeight + contentHeight + footerHeight + padding);
         const width = 1080;
+        const gap = 20;
         
+        // Create container with auto height first to measure
         const container = document.createElement('div');
         container.style.position = 'fixed';
         container.style.left = '-9999px';
         container.style.top = '0';
         container.style.width = `${width}px`;
-        container.style.height = `${totalHeight}px`;
         container.style.background = 'hsl(215, 55%, 9%)';
-        container.style.padding = '60px';
+        container.style.padding = '50px';
+        container.style.paddingBottom = '80px';
         container.style.display = 'flex';
         container.style.flexDirection = 'column';
         container.style.fontFamily = "'Noto Sans Bengali', sans-serif";
-        container.style.overflow = 'hidden';
         
         const header = document.createElement('div');
         header.style.textAlign = 'center';
-        header.style.marginBottom = '40px';
+        header.style.marginBottom = '30px';
         header.style.flexShrink = '0';
         header.innerHTML = `
-          <div style="color: hsl(45, 73%, 56%); font-size: 32px; font-weight: bold; margin-bottom: 16px; text-shadow: 0 0 20px hsla(45, 73%, 56%, 0.3);">
+          <div style="color: hsl(45, 73%, 56%); font-size: 28px; font-weight: bold; margin-bottom: 12px; text-shadow: 0 0 20px hsla(45, 73%, 56%, 0.3);">
             বাংলা কবিতার ভেতরে
           </div>
-          <div style="color: hsla(45, 73%, 56%, 0.5); font-size: 18px;">
+          <div style="color: hsla(45, 73%, 56%, 0.5); font-size: 16px;">
             ${playerName || "(নাম দেওয়া হয়নি)"}${chunks.length > 1 ? ` — পর্ব ${chunkIndex + 1}/${chunks.length}` : ''}
           </div>
         `;
@@ -241,16 +233,16 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         
         chunk.forEach((item) => {
           const answerDiv = document.createElement('div');
-          answerDiv.style.padding = '20px';
-          answerDiv.style.paddingLeft = '24px';
+          answerDiv.style.padding = '16px';
+          answerDiv.style.paddingLeft = '20px';
           answerDiv.style.borderLeft = '3px solid hsla(45, 73%, 56%, 0.3)';
           answerDiv.style.background = 'hsla(215, 55%, 12%, 0.5)';
-          answerDiv.style.borderRadius = '8px';
+          answerDiv.style.borderRadius = '6px';
           answerDiv.innerHTML = `
-            <div style="color: hsla(45, 73%, 56%, 0.6); font-size: 15px; margin-bottom: 12px; line-height: 1.5;">
+            <div style="color: hsla(45, 73%, 56%, 0.6); font-size: 14px; margin-bottom: 8px; line-height: 1.4;">
               ${item.question.replace(/\n/g, ' ')} <span style="color: hsla(45, 73%, 56%, 0.4);">— ${item.source}</span>
             </div>
-            <div style="color: hsl(45, 73%, 56%); font-size: 20px; opacity: 0.9; line-height: 1.4;">
+            <div style="color: hsl(45, 73%, 56%); font-size: 18px; opacity: 0.9; line-height: 1.35;">
               ${item.answer}
             </div>
           `;
@@ -261,11 +253,10 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         
         const footer = document.createElement('div');
         footer.style.textAlign = 'center';
-        footer.style.paddingTop = '40px';
-        footer.style.marginTop = 'auto';
+        footer.style.paddingTop = '30px';
         footer.style.flexShrink = '0';
         footer.innerHTML = `
-          <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 16px;">
+          <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 14px;">
             @shohailmahmud09
           </div>
         `;
