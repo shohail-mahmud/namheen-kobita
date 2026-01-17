@@ -18,7 +18,7 @@ export function TypewriterText({
   return (
     <div 
       className={cn(
-        "text-primary font-bold text-[clamp(1.1rem,3vw,1.9rem)] leading-[1.22] whitespace-pre-wrap tracking-[0.02em] text-glow",
+        "text-primary font-bold text-[clamp(0.95rem,2.5vw,1.5rem)] leading-[1.22] whitespace-pre-wrap tracking-[0.02em] text-glow",
         glitchClass,
         className
       )}
