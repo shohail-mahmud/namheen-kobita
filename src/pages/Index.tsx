@@ -330,7 +330,7 @@ export default function Index() {
       {/* Audio control */}
       <button 
         onClick={handleMuteToggle}
-        className="absolute top-4 right-4 text-primary text-[1.2rem] opacity-40 hover:opacity-70 transition-opacity z-50 cursor-pointer"
+        className="absolute top-4 right-4 text-primary text-[0.9rem] opacity-40 hover:opacity-70 transition-opacity z-50 cursor-pointer"
         title={isMuted ? 'Unmute' : 'Mute'}
       >
         {audioInitialized ? (isMuted ? '🔇' : '🔊') : '🔇'}
