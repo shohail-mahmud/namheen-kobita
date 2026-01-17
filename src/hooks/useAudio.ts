@@ -38,7 +38,7 @@ export function useAudio() {
     
     const ctx = audioContextRef.current;
     ambientGainRef.current = ctx.createGain();
-    ambientGainRef.current.gain.setValueAtTime(0.015, ctx.currentTime);
+    ambientGainRef.current.gain.setValueAtTime(0.035, ctx.currentTime);
     ambientGainRef.current.connect(ctx.destination);
 
     // Create drone layers for ambient atmosphere
@@ -106,7 +106,7 @@ export function useAudio() {
     const newMuted = !isMuted;
     setIsMuted(newMuted);
     
-    const targetGain = newMuted ? 0 : 0.015;
+    const targetGain = newMuted ? 0 : 0.035;
     ambientGainRef.current.gain.linearRampToValueAtTime(
       targetGain, 
       audioContextRef.current.currentTime + 0.3
@@ -132,7 +132,7 @@ export function useAudio() {
     filter.type = 'lowpass';
     filter.frequency.value = 2000;
     
-    gainNode.gain.setValueAtTime(0.008, audioContextRef.current.currentTime);
+    gainNode.gain.setValueAtTime(0.025, audioContextRef.current.currentTime);
     gainNode.gain.exponentialRampToValueAtTime(0.001, audioContextRef.current.currentTime + 0.025);
     
     oscillator.connect(filter);
