@@ -151,8 +151,8 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
     footer.style.right = '0';
     footer.style.textAlign = 'center';
     footer.innerHTML = `
-      <div style="color: hsla(45, 73%, 56%, 0.3); font-size: 16px;">
-        @shohailmahmud09
+      <div style="color: hsla(45, 73%, 56%, 0.3); font-size: 14px;">
+        © a Website developed by ShohailMahmud09 . github : shohail-mahmud
       </div>
     `;
     container.appendChild(footer);
@@ -257,7 +257,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
         footer.style.flexShrink = '0';
         footer.innerHTML = `
           <div style="color: hsla(45, 73%, 56%, 0.4); font-size: 14px;">
-            @shohailmahmud09
+            © a Website developed by ShohailMahmud09 . github : shohail-mahmud
           </div>
         `;
         container.appendChild(footer);
@@ -331,7 +331,7 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
             {isGenerating ? 'ছবি তৈরি হচ্ছে...' : 'ছবি ডাউনলোড করো'}
           </CRTButton>
           <div className="text-primary/30 text-[0.75rem] mt-3">
-            {answers.length <= 7 ? '২টি ছবি তৈরি হবে (১টি কভার + ১টি উত্তর)' : `${Math.ceil(answers.length / 5) + 1}টি ছবি তৈরি হবে`}
+            {answers.length <= 10 ? '২টি ছবি তৈরি হবে (১টি কভার + ১টি উত্তর)' : `${Math.ceil(answers.length / Math.ceil(answers.length / 2)) + 1}টি ছবি তৈরি হবে`}
           </div>
           
           {/* Developer credit below button */}
