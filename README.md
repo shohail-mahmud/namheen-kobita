@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+# বাংলা কবিতার ভেতরে
 
-## Project info
+একটি আত্মচিন্তনমূলক যাত্রা — A self-reflective journey through Bengali poetry.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+An interactive retro CRT-styled web experience that presents thought-provoking questions from famous Bengali poets and philosophers. Answer deeply, reflect on life, and download your responses as beautiful shareable images.
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- 🖥️ Authentic CRT/retro terminal aesthetic with glitch effects
+- 📝 21 curated questions from legendary Bengali poets (Rabindranath Tagore, Kazi Nazrul Islam, Jibanananda Das, and more)
+- 🎵 Immersive audio with typewriter sounds and glitch effects
+- 📸 Generate and download beautiful image cards of your answers
+- 📱 Fully responsive design
+- 🌙 Dark mode optimized
 
-**Use Lovable**
+## 🛠️ Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **React 18** - UI framework
+- **Vite** - Build tool
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **shadcn/ui** - UI components
+- **html2canvas** - Image generation
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Getting Started
 
-**Use your preferred IDE**
+```bash
+# Clone the repository
+git clone https://github.com/shohail-mahmud/bangla-kobita.git
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Navigate to project directory
+cd bangla-kobita
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Install dependencies
+npm install
 
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📦 Build for Production
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Build the project
+npm run build
 
-**Use GitHub Codespaces**
+# Preview production build
+npm run preview
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🌐 Deploy on Vercel
 
-## What technologies are used for this project?
+This project is optimized for Vercel's free tier:
 
-This project is built with:
+1. Push your code to GitHub
+2. Import your repository on [Vercel](https://vercel.com)
+3. Deploy with default settings (Vite is auto-detected)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
 
-## How can I deploy this project?
+## 👨‍💻 Developer
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+**Shohail Mahmud**
 
-## Can I connect a custom domain to my Lovable project?
+- 📸 Instagram: [@shohailmahmud09](https://instagram.com/shohailmahmud09)
+- 💻 GitHub: [shohail-mahmud](https://github.com/shohail-mahmud)
 
-Yes, you can!
+## 📄 License
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+MIT License - Feel free to use this project for personal or commercial purposes.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+
+<p align="center">
+  Made with ❤️ for Bengali poetry lovers
+</p>

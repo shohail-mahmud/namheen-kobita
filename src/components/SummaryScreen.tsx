@@ -326,16 +326,16 @@ export function SummaryScreen({ playerName, answers }: SummaryScreenProps) {
       ))}
 
       {visibleItems >= answers.length + 2 && (
-        <div className="text-center mt-8 mb-8 animate-fade-in">
+        <div className="text-center mt-6 animate-fade-in">
           <CRTButton onClick={generateImages} disabled={isGenerating}>
             {isGenerating ? 'ছবি তৈরি হচ্ছে...' : 'ছবি ডাউনলোড করো'}
           </CRTButton>
-          <div className="text-primary/30 text-[0.75rem] mt-3">
+          <div className="text-primary/30 text-[0.75rem] mt-2">
             {answers.length <= 10 ? '২টি ছবি তৈরি হবে (১টি কভার + ১টি উত্তর)' : `${Math.ceil(answers.length / Math.ceil(answers.length / 2)) + 1}টি ছবি তৈরি হবে`}
           </div>
           
           {/* Developer credit below button */}
-          <div className="text-primary text-[clamp(0.75rem,1.8vw,0.9rem)] opacity-25 leading-relaxed whitespace-pre-wrap mt-8">
+          <div className="text-primary text-[clamp(0.7rem,1.6vw,0.85rem)] opacity-25 leading-snug mt-4">
             ডেভেলপার: Shohail Mahmud
             <br />
             Instagram: <a href="https://instagram.com/shohailmahmud09" target="_blank" rel="noopener noreferrer" className="underline">@shohailmahmud09</a>
