@@ -48,16 +48,6 @@ npm run build
 npm run preview
 ```
 
-## 🌐 Deploy on Vercel
-
-This project is optimized for Vercel's free tier:
-
-1. Push your code to GitHub
-2. Import your repository on [Vercel](https://vercel.com)
-3. Deploy with default settings (Vite is auto-detected)
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
-
 ## 👨‍💻 Developer
 
 **Shohail Mahmud**
