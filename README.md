@@ -2,6 +2,10 @@
 
 একটি আত্মচিন্তনমূলক যাত্রা — A self-reflective journey through Bengali poetry.
 
+## Live URL 
+
+https://namheen-kobita.vercel.app/
+
 An interactive retro CRT-styled web experience that presents thought-provoking questions from famous Bengali poets and philosophers. Answer deeply, reflect on life, and download your responses as beautiful shareable images.
 
 ## ✨ Features
